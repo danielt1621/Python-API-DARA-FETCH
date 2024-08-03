@@ -1,10 +1,10 @@
-import requests
-import pandas as pd
-from datetime import datetime
-import os
+import requests # To make the API call request
+import pandas as pd # To handle the data
+from datetime import datetime # For date time manipulatioin
+import os # For interaction with the system's OS
 import sys
-from cryptography.fernet import Fernet
-from dotenv import load_dotenv
+from cryptography.fernet import Fernet # For encrypting / decrypting variables
+from dotenv import load_dotenv # For generating and writing to an .env file
 
 # Load the .env file
 load_dotenv()
@@ -18,12 +18,15 @@ def decrypt_variable(encrypted_value, key):
 encryption_key = os.getenv('ENCRYPTION_KEY').encode()
 
 # Decrypt sensitive variables
+# Based on you API's documentation, you might need more or less variables here
 API_CODE = decrypt_variable(os.getenv('ENCRYPTED_API_CODE'), encryption_key)
 API_USER = decrypt_variable(os.getenv('ENCRYPTED_API_USER'), encryption_key)
 API_PASSWORD = decrypt_variable(os.getenv('ENCRYPTED_API_PASSWORD'), encryption_key)
 api_endpoint = decrypt_variable(os.getenv('ENCRYPTED_API_ENDPOINT'), encryption_key)
 data_endpoint = decrypt_variable(os.getenv('ENCRYPTED_DATA_ENDPOINT'), encryption_key)
 
+# Function to get token from API
+# For ouru case, this first call requests an API temporary token, to then be used to make the data request.
 def get_token(api_endpoint):
     headers = {"Content-Type": "application/json"}
     data = {"Code": API_CODE, "User": API_USER, "Password": API_PASSWORD}
@@ -33,11 +36,14 @@ def get_token(api_endpoint):
     else:
         raise Exception(f"Error receiving the token: {response.status_code}")
 
+# Function to get data from API using the token
+# The body of the request is specified by the API's documentation. Adjust those functions based on your API's specifications
 def get_data(data_endpoint, token, departure_airport, arrival_airport, from_date):
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/json"
     }
+    # The API's documentation requre this structure of the the API body's request
     body = {
         "DepartureAirport": departure_airport,
         "ArrivalAirport": arrival_airport,
@@ -49,6 +55,10 @@ def get_data(data_endpoint, token, departure_airport, arrival_airport, from_date
     else:
         raise Exception(f"Error: {response.status_code}")
 
+# Function to parse JSON response and convert it to a DataFrame
+# In my project's case, I dont need all the data fetched form the endpoint. 
+# Also I want to structure the data that I only need in a specific way, to export them as an .xlxs file later.
+# So I am parsing the data based on my project's requirements
 def parse_json_response(response_json, selected_date, departure_airport):
     parsed_data = []
     for item in response_json:
@@ -74,6 +84,7 @@ def parse_json_response(response_json, selected_date, departure_airport):
 
             pax_count = f"{pax_info_adt} ADT, {pax_info_chd} CHD, {pax_info_inf} INF"
 
+            # Appending the parsed data, the values on the left represent the column names that will be shown in the excel file.
             parsed_data.append({
                 'VOUCHER NO': reservation_number,
                 'HOTELNAME': hotel_name,
@@ -84,17 +95,18 @@ def parse_json_response(response_json, selected_date, departure_airport):
                 'CHECK OUT': check_out_formatted,
                 'PAX COUNT': pax_count,
                 'FLIGHT NO': flight_no,
-                'DEPARTURE AIRPORT': departure_airport  # Add the new column
+                'DEPARTURE AIRPORT': departure_airport  
             })
 
     return pd.DataFrame(parsed_data)
 
+# Main function to get token, fetch data, and save it to an Excel file
 def main(arrival_airport, from_date, save_path):
     try:
         token = get_token(api_endpoint)
         all_data = []
 
-        for departure_airport in ['PRG', 'BRQ', 'OSR']:
+        for departure_airport in ['value1', 'value2', 'valu3']:
             response_json = get_data(data_endpoint, token, departure_airport, arrival_airport, from_date)
             df_parsed = parse_json_response(response_json, from_date, departure_airport)
             all_data.append(df_parsed)
@@ -105,6 +117,7 @@ def main(arrival_airport, from_date, save_path):
     except Exception as e:
         return str(e)
 
+# Entry point for the script
 if __name__ == "__main__":
     if len(sys.argv) != 4:
         print("Usage: python script.py <arrival_airport> <from_date> <save_path>")
