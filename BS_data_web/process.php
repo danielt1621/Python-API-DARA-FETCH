@@ -23,9 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Generate a unique filename for the Excel file
-    $fileName = 'API_RESULT_' . $fromDate . '_' . $arrivalAirport . '.xlsx';
+    $fileName = 'FileID_' . $fromDate . '_' . $arrivalAirport . '.xlsx';
     
     // Get user's Documents folder
+    // Change the '/Documents' to any path of your preference
     $userProfile = getenv('USERPROFILE');
     $saveDir = $userProfile . '\Documents';
     $savePath = $saveDir . '\\' . $fileName;
