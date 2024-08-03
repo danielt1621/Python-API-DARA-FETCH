@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Generate a unique filename for the Excel file
-    $fileName = 'BS_LABELS_' . $fromDate . '_' . $arrivalAirport . '.xlsx';
+    $fileName = 'API_RESULT_' . $fromDate . '_' . $arrivalAirport . '.xlsx';
     
     // Get user's Documents folder
     $userProfile = getenv('USERPROFILE');
@@ -31,6 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $savePath = $saveDir . '\\' . $fileName;
 
     // Execute Python script
+    // Add your path to where the python script is located
+    // On this test I'm using the xampp to run the Apache server, so the script is located in the htdocs file
     $command = "python \"C:\\xampp\\htdocs\\BS_data_web\\script.py\" \"$arrivalAirport\" \"$fromDate\" \"$savePath\"";
     $output = shell_exec($command);
 
