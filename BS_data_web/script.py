@@ -1,3 +1,52 @@
+"""
+Detailed Breakdown
+Imports and Environment Setup
+
+Import necessary modules.
+Load environment variables from a .env file.
+Define a function to decrypt these environment variables.
+Decrypt Environment Variables
+
+Decrypt sensitive information such as API credentials and endpoints using the Fernet encryption key.
+Get API Token
+
+Define a function get_token to request a token from the API endpoint using the decrypted credentials.
+Fetch Data from API
+
+Define a function get_data to request data from the data endpoint using the provided token and other parameters 
+(departure airport, arrival airport, and from date).
+
+Parse JSON Response
+
+Define a function parse_json_response to parse the JSON response from the API and convert it into a pandas DataFrame. 
+This function formats dates and extracts necessary information.
+
+Main Function
+
+The main function main orchestrates the workflow:
+Fetch the token.
+Request data for multiple departure airports.
+Parse the responses and concatenate the data into a single DataFrame.
+Save the final DataFrame to an Excel file.
+Script Entry Point
+
+Check if the script receives the correct number of command-line arguments.
+Call the main function with the provided arguments and print the result.
+This script is designed to be run as a standalone command-line tool, and it interacts with an API to fetch data, process it, and save it as an Excel file. 
+Make sure to replace placeholder environment variables and paths with actual values before running the script.
+
+"""
+
+
+
+
+
+
+
+
+
+
+
 import requests # To make the API call request
 import pandas as pd # To handle the data
 from datetime import datetime # For date time manipulatioin
