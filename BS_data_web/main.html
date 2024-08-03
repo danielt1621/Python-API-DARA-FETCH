@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BS API Tool</title>
+    <link rel="icon" type="image/png" href="assets/logo_small.JPG">
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0;
+            padding: 2rem;
+            /*background-color: #f0f0f0;*/
+            background-image: linear-gradient(to right, #27398F, #4557B3);
+            color:  #003d82;
+        }
+        .logo {
+            max-width: 200px;
+            margin-bottom: 2rem;
+        }
+        .form-container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            /*box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
+            margin-top:  250px; /*Change values later to margin-auto if it doesn't saty centered*/
+            animation: fadeIn 1s ease-in-out forwards;
+        }
+        @media (max-width: 768px) {
+        body {
+            flex-direction: column;
+            justify-content: center;
+            }
+        .form-container {
+            margin-top: 50%;
+            }
+        .popup-window.show{
+            overflow-y: auto;
+            width: 90%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            max-width: 100%;
+            max-height: 100%;
+      
+        }
+
+
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 1rem;
+        }
+        select, input {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #003d82;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        img{
+            margin: auto;
+        }
+        .copyright-notice {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        font-size: 12px;
+        color: #ffffff;
+        padding: 5px;
+        background-color: #003d82;
+        border-top: 1px solid #ddd;
+        width: 100%;
+        text-align: left;
+        }
+
+        /*  styles for info icon and popup window */
+        .info-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 32px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .info-icon:hover{
+            transform: scale(1.2);
+           
+        }
+      
+
+  
+
+        .popup-window {
+            
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            display: none;
+           max-width: 500px;
+           max-height: 500px;
+            
+        }
+
+        .popup-window.show {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out forwards;
+            
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .popup-window .close-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .popup-window .email-button {
+            background-color: #0056b3;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        .popup-window .email-button:hover {
+            background-color: #003d82;
+        }
+
+        
+    </style>
+</head>
+<body>
+    
+    <div class="form-container">
+        <form action="process.php" method="post">
+            <img src="assets/logo_big.JPG" alt="BS Logo" class="logo">
+            <h1 style="color: #003d82;">Reservation Details<i class="fas fa-info-circle info-icon" aria-hidden="true"></i></h1>
+            <!-- <label for="departureAirport" title="Select the reservation's deaprture airport">Departure Airport:</label>
+            <select id="departureAirport"  name="departureAirport" required>
+                <option value="PRG" title="Prague">PRG</option>
+                <option value="BRQ" title="Brno">BRQ</option>
+                <option value="OSR" title="Ostrava">OSR</option>
+            </select> -->
+
+            <label for="arrivalAirport" title="Select the reservation's arrival airport">Arrival Airport:</label>
+            <select id="arrivalAirport" name="arrivalAirport" required>
+                <option value="RHO" title="Rhodes Island">RHO</option>
+                <option value="KGS" title="Kos Island">KGS</option>
+                <option value="CHQ" title="Chania Island">CHQ</option>
+            </select>
+
+            <label for="fromDate" title="Select the reservation's departure date">Departure Date:</label>
+            <input type="date" id="fromDate" name="fromDate" required>
+
+            <button type="submit" title="Submit reservation request">Submit</button>
+        </form>
+    </div>
+
+    <div class="popup-window">
+        <i class="fas fa-times close-icon" aria-hidden="true"></i>
+        <h2>Help and Support</h2>
+        <p>The Reservation Details, reffer to the Blue Style's API documentation.<br> In order to make an API request to the endpoint, the user needs to fill 
+            the values for "Departure Airport", "Arrival Airport", and "Departure Date". Those values create the "body" that is later sent to the endpoint.</p>
+
+            <p> Based on the date selected, the according data will be fetched form the endpoint. 
+            The user is responsible, for what data they want to fetch from the database.</p>
+
+            <p>Note: Uppon submit, wait a couple of seconds until the downlaod starts. In case you cannot see the downlaod,
+            check the browser's settings, or try clearing your browser's chache . <br><br>For further questions, you cam request Email support using the button below.   </p>
+        <button class="email-button" onclick="window.location.href = 'mailto:d.tsavalos@destinationone.gr?subject=BS_API_help!'">
+            <i class="fas fa-envelope" aria-hidden="true"></i> Email Support
+        </button>
+    </div>
+
+    <script>
+        const infoIcon = document.querySelector('.info-icon');
+        const popupWindow = document.querySelector('.popup-window');
+        const closeIcon = document.querySelector('.close-icon');
+
+        infoIcon.addEventListener('click', () => {
+            popupWindow.classList.add('show');
+        });
+
+        closeIcon.addEventListener('click', () => {
+            popupWindow.classList.remove('show');
+        });
+    </script>
+
+    <footer class="copyright-notice">
+        &copy; BS API TOOL v1, Daniel Tsavalos
+    </footer>
+</body>
+</html>
