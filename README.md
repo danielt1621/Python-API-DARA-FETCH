@@ -36,6 +36,8 @@ Project-Tree:
 - .env:
   This `.env` file contains encrypted values for API credentials and endpoints, ensuring sensitive information is protected. The file includes an encryption key (`ENCRYPTION_KEY`) and encrypted values for the API code, user, password, and endpoints. These encrypted values are to be decrypted programmatically when needed to securely access the sensitive information.
 
+In each file's code snippets, more comments and details can be found.
+
 
 
 # Project Requirements
